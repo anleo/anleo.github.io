@@ -26,8 +26,10 @@ angular.module('taskCalculator', [])
       return localStorage.getItem('username');
     };
 
-    $scope.resetUser = function () {
+    $scope.resetCalculator = function () {
       localStorage.removeItem('username');
+      localStorage.removeItem('tasks');
+      $scope.tasks = [];
     };
 
     $scope.done = function (task) {
@@ -130,8 +132,14 @@ angular.module('taskCalculator', [])
       if (index > -1) {
         $scope.tasks.splice(index, 1);
       }
+      initTask();
       localStorage.setItem('tasks', JSON.stringify($scope.tasks));
       $('input#title').focus();
+    };
+
+    $scope.cancel = function () {
+      initTask();
+      $scope.editMode = false;
     }
   })
 ;
