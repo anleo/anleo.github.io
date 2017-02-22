@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" ng-app="taskCalculator">
+<head>
+  <meta charset="UTF-8">
+  <title>Anleo | TaskCalculator</title>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="main.js"></script>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body ng-controller="taskCalculatorController">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div ng-if="!localUsername()">
+        <h1>Init work</h1>
+
+        <form ng-submit="addUser(username)">
+          <label for="username">Enter your name</label>
+          <input id="username" type="text" class="form-control" ng-model="username">
+          <br>
+          <button class="btn btn-sm btn-success">Add user</button>
+        </form>
+        <hr>
+      </div>
+
+      <div ng-if="localUsername()">
+        <br>
+        <button class="btn btn-sm btn-default" ng-click="resetUser();">Reset user</button>
+        <hr>
+      </div>
+
+      <h1>{{editMode ? 'Edit task' :
+        'Add task'}}
+        <div class="pull-right">
+          <small>Init time:</small>
+          <input type="number" min="0" max="12" class="form-control" style="display: inline-block; width: 70px;"
+                 placeholder="Time/h"
+                 ng-model="initTime"></div>
+      </h1>
+
+      <form ng-submit="editMode ? update(task) : add(task)" class="form-inline">
+        <div class="row">
+          <div class="form-group col-sm-8">
+            <label for="title" style="width: 100%">Title</label>
+            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task"
+                   ng-model="task.title">
+          </div>
+          <div class="form-group col-sm-4">
+            <label for="points" style="width: 100%">Points</label>
+            <input id="points" type="number" min="0" class="form-control" style="width: 100%" placeholder="points"
+                   ng-model="task.points">
+          </div>
+          <div class="form-group col-sm-12">
+            <br>
+            <button type="submit" class="form-control btn btn-sm btn-success" style="width: 100%;">{{editMode ? 'Save' :
+              'Add'}}
+            </button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <h3 ng-if="localUsername()"><strong>{{localUsername()}}</strong><div>&nbsp;</div></h3>
+      <h4>Tasks:</h4>
+      <ul class="list-group" style="width: 100%;">
+        <li ng-repeat="task in tasks" class="list-group-item" ng-if="tasks && tasks.length">
+          <div class="pull-left">
+            <span class="text-danger">{{$index+1}}.</span> {{task.title}} --- {{task.points}}p / {{calcTaskTime(task)}}h <span
+            ng-if="task.status">({{task.status}})</span>
+          </div>
+          <div class="pull-right">
+            <div class="btn-group btn-group-xs unselectable">
+              <button class="btn btn-xs btn-default unselectable"
+                      ng-class="{'active': task.status && task.status === 'done'}" ng-click="done(task)"><i
+                class="glyphicon glyphicon-ok"></i>
+              </button>
+              <button class="btn btn-xs btn-default unselectable"
+                      ng-class="{'active': task.status && task.status === 'in progress'}" ng-click="progress(task)"><i
+                class="glyphicon glyphicon-time"></i>
+              </button>
+              <button class="btn btn-xs btn-default unselectable"
+                      ng-class="{'active': task.status && task.status === 'postponed'}" ng-click="postponed(task)"><i
+                class="glyphicon glyphicon-remove"></i>
+              </button>
+            </div>
+            <div class="btn-group btn-group-xs unselectable">
+              <button class="btn btn-xs btn-success unselectable" ng-click="edit(task)"><i
+                class="glyphicon glyphicon-edit"></i>
+              </button>
+              <button class="btn btn-xs btn-danger unselectable" ng-click="remove(task)"><i
+                class="glyphicon glyphicon-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+        <div class="panel panel-default text-center" ng-if="tasks && !tasks.length">
+          No tasks yet
+        </div>
+      </ul>
+      <div>&nbsp;</div>
+      <hr>
+      <p>
+
+      <!--<div>Init time: {{initTime}}h</div>-->
+      <div>Point cost: {{calcPoints()}}h</div>
+      <div>Total points: {{totalPoints()}}p</div>
+      <div>Approx. planned time: {{approxTime()}}h</div>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  *.unselectable {
+    -moz-user-select: -moz-none !important;
+    -khtml-user-select: none !important;
+    -webkit-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                     supported by Chrome and Opera */
+  }
+</style>
+</body>
+</html>
