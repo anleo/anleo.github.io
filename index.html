@@ -53,13 +53,18 @@
         <div class="row">
           <div class="form-group col-sm-8">
             <label for="title" style="width: 100%">Title</label>
-            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task"
+            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off"
                    ng-model="task.title">
           </div>
-          <div class="form-group col-sm-4">
+          <div class="form-group col-sm-2">
             <label for="points" style="width: 100%">Points</label>
-            <input id="points" type="number" min="0" class="form-control" style="width: 100%" placeholder="points"
+            <input id="points" type="number" min="0" class="form-control" style="width: 100%" placeholder="points" autocomplete="off"
                    ng-model="task.points">
+          </div>
+          <div class="form-group col-sm-2">
+            <label for="spent" style="width: 100%">Spent time, hours</label>
+            <input id="spent" type="number" min="0" step="0.1" class="form-control" style="width: 100%" placeholder="spent" autocomplete="off"
+                   ng-model="task.spent">
           </div>
           <div>&nbsp;</div>
           <div class="form-group col-sm-6" ng-if="editMode">
@@ -79,8 +84,9 @@
       <ul class="list-group" style="width: 100%;">
         <li ng-repeat="task in tasks" class="list-group-item" ng-if="tasks && tasks.length">
           <div class="pull-left">
-            <span class="text-danger">{{$index+1}}.</span> {{task.title}} --- {{task.points}}p / {{calcTaskTime(task)}}h <span
-            ng-if="task.status">({{task.status}})</span>
+            <span class="text-danger">{{$index+1}}.</span> {{task.title}} &mdash; <span class="text-primary">({{task.points}}p / {{calcTaskTime(task)}}h)</span>
+            <span ng-if="task.spent" class="text-success">(spent: {{task.spent}}h)</span>
+            <span ng-if="task.status" class="text-warning"><strong>({{task.status}})</strong></span>
           </div>
           <div class="pull-right">
             <div class="btn-group btn-group-xs unselectable">
@@ -117,9 +123,10 @@
       <p>
 
       <!--<div>Init time: {{initTime}}h</div>-->
-      <div>Point cost: {{calcPoints()}}h</div>
-      <div>Total points: {{totalPoints()}}p</div>
-      <div>Approx. planned time: {{approxTime()}}h</div>
+      <div ng-if="calcPoints()">Point cost: {{calcPoints()}}h</div>
+      <div ng-if="totalPoints()">Total points: {{totalPoints()}}p</div>
+      <div ng-if="approxTime()">Approx. planned time: {{approxTime()}}h</div>
+      <div ng-if="spentTime()">Spent time: {{spentTime()}}h</div>
       </p>
     </div>
   </div>
@@ -140,13 +147,6 @@
     -ms-user-select: none !important;
     user-select: none !important;
     -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none;
-    /* Non-prefixed version, currently
-                                     supported by Chrome and Opera */
   }
 </style>
 </body>

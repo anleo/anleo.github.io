@@ -4,7 +4,8 @@ angular.module('taskCalculator', [])
     var taskModel = function () {
       return {
         title: null,
-        points: 0
+        points: 0,
+        spent: 0
       };
     };
     $scope.tasks = [];
@@ -89,6 +90,14 @@ angular.module('taskCalculator', [])
       result = 0;
       $scope.tasks.map(function (task) {
         result += task.calculatedTime ? +task.calculatedTime : 0;
+      });
+      return result.toFixed(2);
+    };
+
+    $scope.spentTime = function() {
+      result = 0;
+      $scope.tasks.map(function (task) {
+        result += task.spent ? +task.spent : 0;
       });
       return result.toFixed(2);
     };
