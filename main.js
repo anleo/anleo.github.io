@@ -144,6 +144,7 @@ angular.module('taskCalculator', [])
       initTask();
       localStorage.setItem('tasks', JSON.stringify($scope.tasks));
       $('input#title').focus();
+      $scope.editMode = false;
     };
 
     $scope.cancel = function () {
