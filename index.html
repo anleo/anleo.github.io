@@ -85,7 +85,7 @@
         <li ng-repeat="task in tasks" class="list-group-item" ng-if="tasks && tasks.length">
           <div class="pull-left">
             <span class="text-danger">{{$index+1}}.</span> {{task.title}} &mdash; <span class="text-primary">({{task.points}}p / {{calcTaskTime(task)}}h)</span>
-            <span ng-if="task.spent" class="text-success">(spent: {{task.spent}}h)</span>
+            <span ng-if="task.spent" class="text-success" ng-class="{'text-danger': task.spent > calcTaskTime(task)}">(spent: {{task.spent}}h)</span>
             <span ng-if="task.status" class="text-warning"><strong>({{task.status}})</strong></span>
           </div>
           <div class="pull-right">
