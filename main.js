@@ -10,11 +10,11 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.tasks = [];
-
+    $scope.formLoaded = true;
+    $scope.tempTasks = [];
+    
     // DnD
-    function initDnD() {
-      var tasksElement = $($('.tasks-wrapper')[0]);
-
+    function initDnDService(tasksElement) {
       dragularService(tasksElement, {
         scope: $scope,
         boundingBox: tasksElement,
@@ -22,21 +22,30 @@ angular.module('taskCalculator', ['dragularModule'])
         lockY: true,
         revertOnSpill: true
       });
+    }
 
-      $scope.$on('dragulardragend', function ($event, elem) {
+    function initDnD() {
+      var tasksElement = $($('.tasks-wrapper')[0]);
+      initDnDService(tasksElement);
+
+      $scope.$on('dragulardragend', function ($event) {
         $event.stopPropagation();
         if ($event) {
-          saveTasks();
+          setTimeout(saveTasks(), 1)
         }
       });
     }
 
-    function init() {
+    function initLoadTasks() {
       var localTasks = localStorage.getItem('tasks');
       if (localTasks) {
         $scope.tasks = JSON.parse(localTasks);
-        initDnD();
       }
+    }
+
+    function init() {
+      initLoadTasks();
+      initDnD();
     }
 
     init();
@@ -130,12 +139,17 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.task = new taskModel();
+    $scope.lastEdited = null;
     
     $scope.edit = function (task) {
       $("html, body").animate({scrollTop: $('#taskForm').offset().top}, "ease");
 
       $scope.editMode = true;
       $scope.task = task;
+    };
+
+    $scope.callLast = function () {
+      $scope.edit($scope.lastEdited);
     };
 
     $scope.add = function (task) {
@@ -149,7 +163,7 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.update = function (task) {
-      if (task.title) {
+      if (task && task.title) {
         task.points = task.points ? task.points : 0;
         updateTasks();
       }
@@ -169,6 +183,7 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.saveTask = function (task) {
+      $scope.lastEdited = task;
       if ($scope.editMode) {
         $scope.update(task);
       } else {
@@ -178,6 +193,11 @@ angular.module('taskCalculator', ['dragularModule'])
 
     function saveTasks() {
       localStorage.setItem('tasks', JSON.stringify($scope.tasks));
+      setTimeout(function () {
+        var tasksElement = $($('.tasks-wrapper')[0]);
+        initLoadTasks();
+        initDnDService(tasksElement);
+      },1);
     }
 
     function updateTasks() {
@@ -186,21 +206,22 @@ angular.module('taskCalculator', ['dragularModule'])
       $('input#title').focus();
       $scope.editMode = false;
     }
-  })
-  .directive('keyLogger', function() {
-    return {
-      restrict: 'AE',
-      scope: {
-        keyLogger: '=',
-        task: '='
-      },
-      link: function ($scope, $element, $attr) {
-        $($element[0]).on('keypress', function (event) {
-          if (event && event.keyCode === 13) {
-            $scope.keyLogger($scope.task);
-          }
-        });
+
+    $scope.keyLogger = function (event) {
+      if (event && event.keyCode === 13) {
+        // enter
+        $scope.saveTask($scope.task);
+      }
+
+      if (event && event.keyCode === 38 && $scope.lastEdited) {
+        // arrow up
+        $scope.callLast();
+      }
+
+      if (event && event.keyCode === 27) {
+        // escape
+        $scope.cancel();
       }
     };
-  });
+  })
 ;

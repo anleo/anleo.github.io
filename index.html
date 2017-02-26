@@ -58,18 +58,18 @@
         <div class="row">
           <div class="form-group col-sm-8">
             <label for="title" style="width: 100%">Title</label>
-            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off"
-                   ng-model="task.title" key-logger="saveTask" task="task">
+            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off" autofocus="true"
+                   ng-model="task.title" ng-keydown="keyLogger($event)">
           </div>
           <div class="form-group col-sm-2">
             <label for="points" style="width: 100%">Points</label>
             <input id="points" type="number" min="0" class="form-control" style="width: 100%" placeholder="points" autocomplete="off"
-                   ng-model="task.points" key-logger="saveTask" task="task">
+                   ng-model="task.points" ng-keydown="keyLogger($event)">
           </div>
           <div class="form-group col-sm-2">
             <label for="spent" style="width: 100%">Spent time</label>
             <input id="spent" type="number" min="0" step="0.1" class="form-control" style="width: 100%" placeholder="spent" autocomplete="off"
-                   ng-model="task.spent" key-logger="saveTask" task="task">
+                   ng-model="task.spent" ng-keydown="keyLogger($event)">
           </div>
           <div>&nbsp;</div>
           <div class="form-group col-sm-6" ng-if="editMode">
