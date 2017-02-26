@@ -1,19 +1,41 @@
-angular.module('taskCalculator', [])
-  .controller('taskCalculatorController', function ($scope, $document, $window) {
+angular.module('taskCalculator', ['dragularModule'])
+  .controller('taskCalculatorController', function ($scope, dragularService) {
     var taskModel = function () {
       return {
         title: null,
         points: 0,
-        spent: 0
+        spent: 0,
+        status: null
       };
     };
 
     $scope.tasks = [];
 
+    // DnD
+    function initDnD() {
+      var tasksElement = $($('.tasks-wrapper')[0]);
+
+      dragularService(tasksElement, {
+        scope: $scope,
+        boundingBox: tasksElement,
+        containersModel: $scope.tasks,
+        lockY: true,
+        revertOnSpill: true
+      });
+
+      $scope.$on('dragulardragend', function ($event, elem) {
+        $event.stopPropagation();
+        if ($event) {
+          saveTasks();
+        }
+      });
+    }
+
     function init() {
       var localTasks = localStorage.getItem('tasks');
       if (localTasks) {
         $scope.tasks = JSON.parse(localTasks);
+        initDnD();
       }
     }
 
@@ -108,7 +130,7 @@ angular.module('taskCalculator', [])
     };
 
     $scope.task = new taskModel();
-
+    
     $scope.edit = function (task) {
       $("html, body").animate({scrollTop: $('#taskForm').offset().top}, "ease");
 
@@ -122,9 +144,7 @@ angular.module('taskCalculator', [])
         var newTasks = angular.copy($scope.tasks);
         newTasks.push(task);
         $scope.tasks = newTasks;
-        initTask();
-        saveTasks();
-        $('input#title').focus();
+        updateTasks();
       }
     };
 
@@ -146,7 +166,15 @@ angular.module('taskCalculator', [])
     $scope.cancel = function () {
       initTask();
       $scope.editMode = false;
-    }
+    };
+
+    $scope.saveTask = function (task) {
+      if ($scope.editMode) {
+        $scope.update(task);
+      } else {
+        $scope.add(task);
+      }
+    };
 
     function saveTasks() {
       localStorage.setItem('tasks', JSON.stringify($scope.tasks));
@@ -159,4 +187,20 @@ angular.module('taskCalculator', [])
       $scope.editMode = false;
     }
   })
+  .directive('keyLogger', function() {
+    return {
+      restrict: 'AE',
+      scope: {
+        keyLogger: '=',
+        task: '='
+      },
+      link: function ($scope, $element, $attr) {
+        $($element[0]).on('keypress', function (event) {
+          if (event && event.keyCode === 13) {
+            $scope.keyLogger($scope.task);
+          }
+        });
+      }
+    };
+  });
 ;

@@ -6,8 +6,13 @@
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="main.js"></script>
+  <script src="bower_components/dragular/dist/dragular.min.js"></script>
+
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/dragular/dist/dragular.min.css">
+
+  <script src="main.js"></script>
+
   <meta name="author" content="Andrey Leontyev, skaliozz@gmail.com">
   <link rel="icon" type="image/png" href="favicon.png" />
 </head>
@@ -54,17 +59,17 @@
           <div class="form-group col-sm-8">
             <label for="title" style="width: 100%">Title</label>
             <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off"
-                   ng-model="task.title">
+                   ng-model="task.title" key-logger="saveTask" task="task">
           </div>
           <div class="form-group col-sm-2">
             <label for="points" style="width: 100%">Points</label>
             <input id="points" type="number" min="0" class="form-control" style="width: 100%" placeholder="points" autocomplete="off"
-                   ng-model="task.points">
+                   ng-model="task.points" key-logger="saveTask" task="task">
           </div>
           <div class="form-group col-sm-2">
-            <label for="spent" style="width: 100%">Spent time, hours</label>
+            <label for="spent" style="width: 100%">Spent time</label>
             <input id="spent" type="number" min="0" step="0.1" class="form-control" style="width: 100%" placeholder="spent" autocomplete="off"
-                   ng-model="task.spent">
+                   ng-model="task.spent" key-logger="saveTask" task="task">
           </div>
           <div>&nbsp;</div>
           <div class="form-group col-sm-6" ng-if="editMode">
@@ -81,8 +86,8 @@
       <hr>
       <h3 ng-if="localUsername()"><i class="glyphicon glyphicon-user"></i> <strong>{{localUsername()}}</strong><div>&nbsp;</div></h3>
       <h4>Tasks:</h4>
-      <ul class="list-group" style="width: 100%;">
-        <li ng-repeat="task in tasks" class="list-group-item" ng-if="tasks && tasks.length">
+      <ul class="list-group tasks-wrapper containerVertical" style="width: 100%;">
+        <li ng-repeat="task in tasks" class="list-group-item">
           <div class="pull-left">
             <span class="text-danger">{{$index+1}}.</span> {{task.title}} &mdash; <span class="text-primary">({{task.points}}p / {{calcTaskTime(task)}}h)</span>
             <span ng-if="task.spent" class="text-success" ng-class="{'text-danger': task.spent > calcTaskTime(task)}">(spent: {{task.spent}}h)</span>
@@ -114,10 +119,10 @@
           </div>
           <div class="clearfix"></div>
         </li>
-        <div class="panel panel-default text-center" ng-if="tasks && !tasks.length">
-          No tasks yet
-        </div>
       </ul>
+      <div class="panel panel-default text-center" ng-if="tasks && !tasks.length">
+        No tasks yet
+      </div>
       <div>&nbsp;</div>
       <hr>
       <p>
@@ -150,6 +155,9 @@
   .list-group-item{
     background: transparent;
     transition: all 300ms ease;
+  }
+  .list-group-item.gu-mirror{
+    background: #b1ffb9;
   }
   .list-group-item:hover{
     background: #fff8e5;
