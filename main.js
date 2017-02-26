@@ -1,6 +1,5 @@
 angular.module('taskCalculator', [])
-  .controller('taskCalculatorController', function ($scope, $document) {
-    console.log('>>> 11111');
+  .controller('taskCalculatorController', function ($scope, $document, $window) {
     var taskModel = function () {
       return {
         title: null,
@@ -8,22 +7,25 @@ angular.module('taskCalculator', [])
         spent: 0
       };
     };
+
     $scope.tasks = [];
 
-    function init(){
+    function init() {
       var localTasks = localStorage.getItem('tasks');
       if (localTasks) {
-        console.log(JSON.parse(localTasks));
         $scope.tasks = JSON.parse(localTasks);
       }
-    };
+    }
 
     init();
 
-    $scope.editMode = false;
+    var initTask = function () {
+      $scope.task = new taskModel();
+    };
 
+    $scope.editMode = false;
     $scope.username = null;
-    $scope.localUsername = function() {
+    $scope.localUsername = function () {
       return localStorage.getItem('username');
     };
 
@@ -39,6 +41,7 @@ angular.module('taskCalculator', [])
       } else {
         task.status = 'done';
       }
+      saveTasks();
     };
 
     $scope.progress = function (task) {
@@ -47,6 +50,7 @@ angular.module('taskCalculator', [])
       } else {
         task.status = 'in progress';
       }
+      saveTasks();
     };
 
     $scope.postponed = function (task) {
@@ -55,6 +59,7 @@ angular.module('taskCalculator', [])
       } else {
         task.status = 'postponed';
       }
+      saveTasks();
     };
 
     $scope.initTime = 8;
@@ -84,9 +89,9 @@ angular.module('taskCalculator', [])
 
     $scope.addUser = function (username) {
       localStorage.setItem('username', username);
-    }
+    };
 
-    $scope.approxTime = function() {
+    $scope.approxTime = function () {
       result = 0;
       $scope.tasks.map(function (task) {
         result += task.calculatedTime ? +task.calculatedTime : 0;
@@ -94,7 +99,7 @@ angular.module('taskCalculator', [])
       return result.toFixed(2);
     };
 
-    $scope.spentTime = function() {
+    $scope.spentTime = function () {
       result = 0;
       $scope.tasks.map(function (task) {
         result += task.spent ? +task.spent : 0;
@@ -104,14 +109,12 @@ angular.module('taskCalculator', [])
 
     $scope.task = new taskModel();
 
-    var initTask = function () {
-      $scope.task = new taskModel();
-    };
-
     $scope.edit = function (task) {
+      $("html, body").animate({scrollTop: $('#taskForm').offset().top}, "ease");
+
       $scope.editMode = true;
       $scope.task = task;
-    }
+    };
 
     $scope.add = function (task) {
       if (task.title) {
@@ -120,8 +123,7 @@ angular.module('taskCalculator', [])
         newTasks.push(task);
         $scope.tasks = newTasks;
         initTask();
-
-        localStorage.setItem('tasks', JSON.stringify($scope.tasks));
+        saveTasks();
         $('input#title').focus();
       }
     };
@@ -129,26 +131,31 @@ angular.module('taskCalculator', [])
     $scope.update = function (task) {
       if (task.title) {
         task.points = task.points ? task.points : 0;
-        initTask();
-        localStorage.setItem('tasks', JSON.stringify($scope.tasks));
-        $('input#title').focus();
-        $scope.editMode = false;
+        updateTasks();
       }
     };
-    
+
     $scope.remove = function (task) {
       var index = $scope.tasks.indexOf(task);
       if (index > -1) {
         $scope.tasks.splice(index, 1);
       }
-      initTask();
-      localStorage.setItem('tasks', JSON.stringify($scope.tasks));
-      $('input#title').focus();
-      $scope.editMode = false;
+      updateTasks();
     };
 
     $scope.cancel = function () {
       initTask();
+      $scope.editMode = false;
+    }
+
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify($scope.tasks));
+    }
+
+    function updateTasks() {
+      initTask();
+      saveTasks();
+      $('input#title').focus();
       $scope.editMode = false;
     }
   })
