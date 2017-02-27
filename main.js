@@ -12,7 +12,7 @@ angular.module('taskCalculator', ['dragularModule'])
     $scope.tasks = [];
     $scope.formLoaded = true;
     $scope.tempTasks = [];
-    
+
     // DnD
     function initDnDService(tasksElement) {
       dragularService(tasksElement, {
@@ -20,7 +20,8 @@ angular.module('taskCalculator', ['dragularModule'])
         boundingBox: tasksElement,
         containersModel: $scope.tasks,
         lockY: true,
-        revertOnSpill: true
+        revertOnSpill: true,
+        tempModel: $scope.tasks
       });
     }
 
@@ -66,31 +67,34 @@ angular.module('taskCalculator', ['dragularModule'])
       $scope.tasks = [];
     };
 
-    $scope.done = function (task) {
+    $scope.doneTask = function (task) {
+      console.log(task.status);
       if (task.status && task.status === 'done') {
         task.status = null;
       } else {
         task.status = 'done';
       }
-      saveTasks();
+      setTimeout(saveTasks(),1);
     };
 
-    $scope.progress = function (task) {
+    $scope.inProgress = function (task) {
+      console.log(task.status);
       if (task.status && task.status === 'in progress') {
         task.status = null;
       } else {
         task.status = 'in progress';
       }
-      saveTasks();
+      setTimeout(saveTasks(),1);
     };
 
     $scope.postponed = function (task) {
+      console.log(task.status);
       if (task.status && task.status === 'postponed') {
         task.status = null;
       } else {
         task.status = 'postponed';
       }
-      saveTasks();
+      setTimeout(saveTasks(),1);
     };
 
     $scope.initTime = 8;
@@ -140,7 +144,7 @@ angular.module('taskCalculator', ['dragularModule'])
 
     $scope.task = new taskModel();
     $scope.lastEdited = null;
-    
+
     $scope.edit = function (task) {
       $("html, body").animate({scrollTop: $('#taskForm').offset().top}, "ease");
 
@@ -195,9 +199,8 @@ angular.module('taskCalculator', ['dragularModule'])
       localStorage.setItem('tasks', JSON.stringify($scope.tasks));
       setTimeout(function () {
         var tasksElement = $($('.tasks-wrapper')[0]);
-        initLoadTasks();
-        initDnDService(tasksElement);
-      },1);
+        setTimeout(initDnDService(tasksElement), 1);
+      }, 1);
     }
 
     function updateTasks() {
@@ -207,20 +210,72 @@ angular.module('taskCalculator', ['dragularModule'])
       $scope.editMode = false;
     }
 
-    $scope.keyLogger = function (event) {
-      if (event && event.keyCode === 13) {
+    function checkPointsValue(task) {
+      if (typeof task.points === 'string') {
+        task.points = 0;
+      } else {
+        task.points = task.points >= 13 ? 13 : (task.points <= 0 ? 0 : task.points);
+      }
+    }
+
+    function getNextPoints(task, incrementMode) {
+      checkPointsValue(task);
+
+      var pointsList = [0, 1, 2, 3, 5, 8, 13];
+      var currentPoint = pointsList.find(function (point) {
+        return point === +task.points;
+      });
+
+      var currentIndex = pointsList.indexOf(currentPoint);
+
+      var index = 0;
+      if (currentIndex > -1) {
+        if (incrementMode) {
+          var lastIndex = pointsList.length - 1;
+          index = currentIndex >= lastIndex ? lastIndex : ++currentIndex;
+        } else {
+          index = currentIndex <= 0 ? 0 : --currentIndex;
+        }
+      }
+
+      task.points = pointsList[index];
+    }
+
+    $scope.pointsUp = function () {
+      setTimeout(getNextPoints($scope.task, true), 1);
+    };
+
+    $scope.pointsDown = function () {
+      setTimeout(getNextPoints($scope.task, false), 1);
+    };
+
+    $scope.keyLogger = function (options) {
+      if (options && options.keyCode === 13) {
         // enter
         $scope.saveTask($scope.task);
       }
 
-      if (event && event.keyCode === 38 && $scope.lastEdited) {
+      if (options.keyCode === 38) {
         // arrow up
-        $scope.callLast();
+        if (options.points) {
+          setTimeout(getNextPoints($scope.task, true), 1);
+        } else if ($scope.lastEdited && !options.points) {
+          $scope.callLast();
+        }
       }
 
-      if (event && event.keyCode === 27) {
+      if (options.keyCode === 40) {
+        // arrow down
+        setTimeout(getNextPoints($scope.task, false), 1);
+      }
+
+      if (options.keyCode === 27) {
         // escape
         $scope.cancel();
+      }
+
+      if (options.points) {
+        checkPointsValue($scope.task);
       }
     };
   })

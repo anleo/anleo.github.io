@@ -14,16 +14,21 @@
   <script src="main.js"></script>
 
   <meta name="author" content="Andrey Leontyev, skaliozz@gmail.com">
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png"/>
 </head>
 <body ng-controller="taskCalculatorController">
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand"><img src="favicon.png" style="width: auto; height: 20px; display: inline-block;"> Task Calculator <small class="text-muted"><small> | brought by angry SM</small></small></a>
+      <a class="navbar-brand"><img src="favicon.png" style="width: auto; height: 20px; display: inline-block;"> Task
+        Calculator
+        <small class="text-muted">
+          <small> | brought by angry SM</small>
+        </small>
+      </a>
     </div>
-    </div>
-  </nav>
+  </div>
+</nav>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -41,7 +46,8 @@
 
       <div ng-if="localUsername()">
         <br>
-        <button class="btn btn-sm btn-default" ng-click="resetCalculator();"> Reset calculator (delete user / tasks) </button>
+        <button class="btn btn-sm btn-default" ng-click="resetCalculator();"> Reset calculator (delete user / tasks)
+        </button>
         <hr>
       </div>
 
@@ -57,34 +63,51 @@
       <form ng-submit="editMode ? update(task) : add(task)" class="form-inline" id="taskForm">
         <div class="row">
           <div class="form-group col-sm-8">
-            <label for="title" style="width: 100%">Title</label>
-            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off" autofocus="true"
-                   ng-model="task.title" ng-keydown="keyLogger($event)">
+            <label for="title" style="width: 100%">Title
+              <!--<span style="margin-left: 20px;">-->
+                <!--<button type="button" class="btn btn-xs btn-default" ng-click="task.static = !task.static">-->
+                  <!--<i class="glyphicon" ng-class="task.static ? 'glyphicon-check' : 'glyphicon-unchecked'"></i> Static-->
+                  <!--task-->
+                <!--</button>-->
+              <!--</span>-->
+            </label>
+            <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off"
+                   ng-model="task.title" ng-keydown="keyLogger({keyCode: $event.keyCode, points: false})">
           </div>
           <div class="form-group col-sm-2">
-            <label for="points" style="width: 100%">Points</label>
-            <input id="points" type="number" min="0" class="form-control" style="width: 100%" placeholder="points" autocomplete="off"
-                   ng-model="task.points" ng-keydown="keyLogger($event)">
+            <label for="points" style="width: 100%">Points
+              <span class="pull-right">
+                <i class="glyphicon glyphicon-plus text-success unselectable" ng-click="pointsUp(task)"></i>
+                <i class="glyphicon glyphicon-minus text-danger unselectable" ng-click="pointsDown(task)"></i>
+              </span>
+            </label>
+            <input id="points" type="text" min="0" class="form-control" style="width: 100%" placeholder="points"
+                   autocomplete="off"
+                   ng-model="task.points" ng-keydown="keyLogger({keyCode: $event.keyCode, points: true})">
           </div>
           <div class="form-group col-sm-2">
             <label for="spent" style="width: 100%">Spent time</label>
-            <input id="spent" type="number" min="0" step="0.1" class="form-control" style="width: 100%" placeholder="spent" autocomplete="off"
-                   ng-model="task.spent" ng-keydown="keyLogger($event)">
+            <input id="spent" type="number" min="0" step="0.1" class="form-control" style="width: 100%"
+                   placeholder="spent" autocomplete="off"
+                   ng-model="task.spent" ng-keydown="keyLogger({keyCode: $event.keyCode, points: false})">
           </div>
           <div>&nbsp;</div>
           <div class="form-group col-sm-6" ng-if="editMode">
-            <button type="submit" class="form-control btn btn-sm btn-warning" style="width: 100%;" ng-click="cancel()">Cancel
+            <button type="submit" class="form-control btn btn-sm btn-warning" style="width: 100%;" ng-click="cancel()">
+              Cancel
             </button>
           </div>
           <div class="form-group col-sm-12" ng-class="{'col-sm-6': editMode}">
-            <button type="submit" class="form-control btn btn-sm btn-success" ng-class="{'btn-info': editMode}" style="width: 100%;">{{editMode ? 'Save' :
-              'Add'}}
+            <button type="submit" class="form-control btn btn-sm btn-success" ng-class="{'btn-info': editMode}"
+                    style="width: 100%;">{{editMode ? 'Save' : 'Add'}}
             </button>
           </div>
         </div>
       </form>
       <hr>
-      <h3 ng-if="localUsername()"><i class="glyphicon glyphicon-user"></i> <strong>{{localUsername()}}</strong><div>&nbsp;</div></h3>
+      <h3 ng-if="localUsername()"><i class="glyphicon glyphicon-user"></i> <strong>{{localUsername()}}</strong>
+        <div>&nbsp;</div>
+      </h3>
       <h4>Tasks:</h4>
       <ul class="list-group tasks-wrapper containerVertical" style="width: 100%;">
         <li ng-repeat="task in tasks" class="list-group-item">
@@ -96,11 +119,11 @@
           <div class="pull-right">
             <div class="btn-group btn-group-xs unselectable">
               <button class="btn btn-xs btn-default unselectable"
-                      ng-class="{'active': task.status && task.status === 'done'}" ng-click="done(task)"><i
+                      ng-class="{'active': task.status && task.status === 'done'}" ng-click="doneTask(task)"><i
                 class="glyphicon glyphicon-ok"></i>
               </button>
               <button class="btn btn-xs btn-default unselectable"
-                      ng-class="{'active': task.status && task.status === 'in progress'}" ng-click="progress(task)"><i
+                      ng-class="{'active': task.status && task.status === 'in progress'}" ng-click="inProgress(task)"><i
                 class="glyphicon glyphicon-time"></i>
               </button>
               <button class="btn btn-xs btn-default unselectable"
@@ -141,9 +164,11 @@
     margin: 0;
     padding: 0;
   }
+
   .navbar {
     border-radius: 0;
   }
+
   *.unselectable {
     -moz-user-select: -moz-none !important;
     -khtml-user-select: none !important;
@@ -152,14 +177,17 @@
     user-select: none !important;
     -webkit-touch-callout: none; /* iOS Safari */
   }
-  .list-group-item{
+
+  .list-group-item {
     background: transparent;
     transition: all 300ms ease;
   }
-  .list-group-item.gu-mirror{
+
+  .list-group-item.gu-mirror {
     background: #b1ffb9;
   }
-  .list-group-item:hover{
+
+  .list-group-item:hover {
     background: #fff8e5;
   }
 </style>
