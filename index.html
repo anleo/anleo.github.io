@@ -65,10 +65,10 @@
           <div class="form-group col-sm-8">
             <label for="title" style="width: 100%">Title
               <!--<span style="margin-left: 20px;">-->
-                <!--<button type="button" class="btn btn-xs btn-default" ng-click="task.static = !task.static">-->
-                  <!--<i class="glyphicon" ng-class="task.static ? 'glyphicon-check' : 'glyphicon-unchecked'"></i> Static-->
-                  <!--task-->
-                <!--</button>-->
+              <!--<button type="button" class="btn btn-xs btn-default" ng-click="task.static = !task.static">-->
+              <!--<i class="glyphicon" ng-class="task.static ? 'glyphicon-check' : 'glyphicon-unchecked'"></i> Static-->
+              <!--task-->
+              <!--</button>-->
               <!--</span>-->
             </label>
             <input id="title" type="text" class="form-control" style="width: 100%" placeholder="task" autocomplete="off"
@@ -106,6 +106,7 @@
       </form>
       <hr>
       <h3 ng-if="localUsername()"><i class="glyphicon glyphicon-user"></i> <strong>{{localUsername()}}</strong>
+
         <div>&nbsp;</div>
       </h3>
       <h4>Tasks:</h4>
@@ -148,13 +149,13 @@
       </div>
       <div>&nbsp;</div>
       <hr>
-      <p>
 
-      <div ng-if="calcPoints()">Point cost: {{calcPoints()}}h</div>
-      <div ng-if="totalPoints()">Total points: {{totalPoints()}}p</div>
-      <div ng-if="approxTime()">Approx. planned time: {{approxTime()}}h</div>
-      <div ng-if="spentTime()">Total spent time: {{spentTime()}}h</div>
-      </p>
+      <div class="footer">
+        <div ng-if="calcPoints()">Point cost: {{calcPoints()}}h</div>
+        <div ng-if="totalPoints()">Total points: {{totalPoints()}}p</div>
+        <div ng-if="approxTime()">Approx. planned time: {{approxTime()}}h</div>
+        <div ng-if="spentTime()">Total spent time: {{spentTime()}}h</div>
+      </div>
     </div>
   </div>
 </div>
@@ -189,6 +190,9 @@
 
   .list-group-item:hover {
     background: #fff8e5;
+  }
+  .footer {
+    margin-bottom: 100px;
   }
 </style>
 </body>
