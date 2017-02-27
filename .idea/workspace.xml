@@ -24,10 +24,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47504026">
+            <state vertical-scroll-proportion="-5.1754384">
               <caret line="72" column="20" selection-start-line="72" selection-start-column="20" selection-end-line="72" selection-end-column="20" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -46,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.9310346">
-              <caret line="211" column="0" selection-start-line="211" selection-start-column="0" selection-end-line="211" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5023112">
+              <caret line="152" column="31" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -66,8 +66,8 @@
       <list>
         <option value="$PROJECT_DIR$/11" />
         <option value="$PROJECT_DIR$/custom.bootstrap.min.css" />
-        <option value="$PROJECT_DIR$/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/main.js" />
       </list>
     </option>
   </component>
@@ -291,7 +291,13 @@
       <option name="project" value="LOCAL" />
       <updated>1488158429520</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="- fixed fibonacci row">
+      <created>1488182502150</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1488182502151</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -333,7 +339,8 @@
     <MESSAGE value="- added keyLogger to edit last on ArrowUp, to cancel on Escape, to save on Enter&#10;- fixed DnD after save/edit" />
     <MESSAGE value="- fixed points increment&#10;- fixed DnD" />
     <MESSAGE value="- fixed styles" />
-    <option name="LAST_COMMIT_MESSAGE" value="- fixed styles" />
+    <MESSAGE value="- fixed fibonacci row" />
+    <option name="LAST_COMMIT_MESSAGE" value="- fixed fibonacci row" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1339,17 +1346,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.9310346">
-          <caret line="211" column="0" selection-start-line="211" selection-start-column="0" selection-end-line="211" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47504026">
+        <state vertical-scroll-proportion="-5.1754384">
           <caret line="72" column="20" selection-start-line="72" selection-start-column="20" selection-end-line="72" selection-end-column="20" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1364,6 +1363,14 @@
             <element signature="n#style#0;n#button#0;n#div#5;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5023112">
+          <caret line="152" column="31" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

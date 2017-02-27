@@ -150,6 +150,7 @@ angular.module('taskCalculator', ['dragularModule'])
 
       $scope.editMode = true;
       $scope.task = task;
+      $('input#title').focus();
     };
 
     $scope.callLast = function () {
