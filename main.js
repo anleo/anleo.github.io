@@ -68,7 +68,6 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.doneTask = function (task) {
-      console.log(task.status);
       if (task.status && task.status === 'done') {
         task.status = null;
       } else {
@@ -78,7 +77,6 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.inProgress = function (task) {
-      console.log(task.status);
       if (task.status && task.status === 'in progress') {
         task.status = null;
       } else {
@@ -88,7 +86,6 @@ angular.module('taskCalculator', ['dragularModule'])
     };
 
     $scope.postponed = function (task) {
-      console.log(task.status);
       if (task.status && task.status === 'postponed') {
         task.status = null;
       } else {
