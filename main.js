@@ -210,18 +210,18 @@ angular.module('taskCalculator', ['dragularModule'])
       $scope.editMode = false;
     }
 
+    var pointsList = [0, 1, 2, 3, 5, 8, 13, 21, 34];
+
     function checkPointsValue(task) {
       if (typeof task.points === 'string') {
         task.points = 0;
       } else {
-        task.points = task.points >= 13 ? 13 : (task.points <= 0 ? 0 : task.points);
+        task.points = task.points >= pointsList[pointsList.length - 1] ? pointsList[pointsList.length - 1] : (task.points <= 0 ? 0 : task.points);
       }
     }
 
     function getNextPoints(task, incrementMode) {
       checkPointsValue(task);
-
-      var pointsList = [0, 1, 2, 3, 5, 8, 13];
       var currentPoint = pointsList.find(function (point) {
         return point === +task.points;
       });
