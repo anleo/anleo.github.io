@@ -254,7 +254,7 @@ angular.module('taskCalculator', ['dragularModule'])
       if (options.keyCode === 38) {
         if (options.points) {
           $scope.increment = true;
-        } else if ($scope.lastEdited && !options.points) {
+        } else if (!options.spent && $scope.lastEdited && !options.points) {
           $scope.callLast();
         }
       }
