@@ -116,7 +116,7 @@
             <span ng-if="task.spent" class="text-success" ng-class="{'text-danger': task.spent > calcTaskTime(task)}">(spent: {{task.spent}}h)</span>
             <span ng-if="task.status" class="text-warning"><strong>({{task.status}})</strong></span>
           </div>
-          <div class="pull-right">
+          <div class="pull-right unselectable">
             <div class="btn-group btn-group-xs unselectable">
               <button class="btn btn-xs btn-default unselectable"
                       ng-class="{'active': task.status && task.status === 'done'}" ng-click="doneTask(task)"><i

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7e60a30a-9cb4-447b-a3d1-18cbe81ac5dc" name="Default" comment="- added keyLogger to edit last on ArrowUp, to cancel on Escape, to save on Enter&#10;- fixed DnD after save/edit">
+    <list default="true" id="7e60a30a-9cb4-447b-a3d1-18cbe81ac5dc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
     </list>
     <ignored path="TaskCalculator.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,8 +27,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4041868">
-              <caret line="79" column="58" selection-start-line="79" selection-start-column="58" selection-end-line="79" selection-end-column="58" />
+            <state vertical-scroll-proportion="0.22705314">
+              <caret line="119" column="61" selection-start-line="119" selection-start-column="61" selection-end-line="119" selection-end-column="61" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#input#0;n#div#0;n#h1#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -280,7 +279,13 @@
       <option name="project" value="LOCAL" />
       <updated>1488151026617</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="- fixed points increment&#10;- fixed DnD">
+      <created>1488158332701</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1488158332701</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -320,7 +325,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="- cleanup&#10;- added drag and drop for tasks&#10;- simplified code&#10;- fixed keypress losing on edit with directive" />
     <MESSAGE value="- added keyLogger to edit last on ArrowUp, to cancel on Escape, to save on Enter&#10;- fixed DnD after save/edit" />
-    <option name="LAST_COMMIT_MESSAGE" value="- added keyLogger to edit last on ArrowUp, to cancel on Escape, to save on Enter&#10;- fixed DnD after save/edit" />
+    <MESSAGE value="- fixed points increment&#10;- fixed DnD" />
+    <option name="LAST_COMMIT_MESSAGE" value="- fixed points increment&#10;- fixed DnD" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1336,8 +1342,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4041868">
-          <caret line="79" column="58" selection-start-line="79" selection-start-column="58" selection-end-line="79" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.22705314">
+          <caret line="119" column="61" selection-start-line="119" selection-start-column="61" selection-end-line="119" selection-end-column="61" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#input#0;n#div#0;n#h1#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
