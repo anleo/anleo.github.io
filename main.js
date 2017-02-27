@@ -212,9 +212,9 @@ angular.module('taskCalculator', ['dragularModule'])
 
     function checkPointsValue(task) {
       if (typeof task.points === 'string') {
-        task.points = 0;
+          task.points = !!parseInt(task.points) ? parseInt(task.points) : 0;
       } else {
-        task.points = task.points >= pointsList[pointsList.length - 1] ? pointsList[pointsList.length - 1] : (task.points <= 0 ? 0 : task.points);
+          task.points = task.points >= pointsList[pointsList.length - 1] ? pointsList[pointsList.length - 1] : (task.points <= 0 ? 0 : task.points);
       }
     }
 
