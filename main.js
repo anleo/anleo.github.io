@@ -3,7 +3,7 @@ angular.module('taskCalculator', ['dragularModule'])
     var taskModel = function () {
       return {
         title: null,
-        points: 0,
+        points: null,
         spent: 0,
         status: null
       };
@@ -73,7 +73,7 @@ angular.module('taskCalculator', ['dragularModule'])
       } else {
         task.status = 'done';
       }
-      setTimeout(saveTasks(),1);
+      setTimeout(saveTasks(), 1);
     };
 
     $scope.inProgress = function (task) {
@@ -82,7 +82,7 @@ angular.module('taskCalculator', ['dragularModule'])
       } else {
         task.status = 'in progress';
       }
-      setTimeout(saveTasks(),1);
+      setTimeout(saveTasks(), 1);
     };
 
     $scope.postponed = function (task) {
@@ -91,7 +91,7 @@ angular.module('taskCalculator', ['dragularModule'])
       } else {
         task.status = 'postponed';
       }
-      setTimeout(saveTasks(),1);
+      setTimeout(saveTasks(), 1);
     };
 
     $scope.initTime = 8;
@@ -156,7 +156,7 @@ angular.module('taskCalculator', ['dragularModule'])
 
     $scope.add = function (task) {
       if (task.title) {
-        task.points = task.points ? task.points : 0;
+        task.points = !!parseInt(task.points) ? parseInt(task.points) : 0;
         var newTasks = angular.copy($scope.tasks);
         newTasks.push(task);
         $scope.tasks = newTasks;
@@ -166,7 +166,7 @@ angular.module('taskCalculator', ['dragularModule'])
 
     $scope.update = function (task) {
       if (task && task.title) {
-        task.points = task.points ? task.points : 0;
+        task.points = !!parseInt(task.points) ? parseInt(task.points) : 0;
         updateTasks();
       }
     };
@@ -208,67 +208,64 @@ angular.module('taskCalculator', ['dragularModule'])
       $scope.editMode = false;
     }
 
-    var pointsList = [0, 1, 2, 3, 5, 8, 13, 21, 34];
+    // fibonacci increment
+    $scope.increment = false;
+    var pointsList = [0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89];
 
-    function checkPointsValue(task) {
-      if (typeof task.points === 'string') {
-          task.points = !!parseInt(task.points) ? parseInt(task.points) : 0;
-      } else {
-          task.points = task.points >= pointsList[pointsList.length - 1] ? pointsList[pointsList.length - 1] : (task.points <= 0 ? 0 : task.points);
-      }
-    }
+    $scope.$watch('task.points', function (points) {
+      var _points = pointsValidationFibonacciFloor(points);
+      $scope.task.points = _points;
+    });
 
-    function getNextPoints(task, incrementMode) {
-      checkPointsValue(task);
-      var currentPoint = pointsList.find(function (point) {
-        return point === +task.points;
-      });
-
-      var currentIndex = pointsList.indexOf(currentPoint);
-
-      var index = 0;
-      if (currentIndex > -1) {
-        if (incrementMode) {
-          var lastIndex = pointsList.length - 1;
-          index = currentIndex >= lastIndex ? lastIndex : ++currentIndex;
-        } else {
-          index = currentIndex <= 0 ? 0 : --currentIndex;
+    function pointsValidationFibonacciFloor(points) {
+      var points = !!parseInt(points) ? parseInt(points) : 0;
+      for (var i = 0; i < pointsList.length; i++) {
+        if (points >= pointsList[pointsList.length - 1]) {
+          points = pointsList[pointsList.length - 1];
+        } else if ($scope.increment && points > pointsList[i] && points <= pointsList[i + 1]) {
+          points = pointsList[i + 1];
+        } else if (!$scope.increment && points >= pointsList[i] && points < pointsList[i + 1]) {
+          points = pointsList[i];
         }
       }
 
-      task.points = pointsList[index];
+      return points;
     }
 
-    $scope.pointsUp = function () {
-      setTimeout(getNextPoints($scope.task, true), 1);
-    };
+    function checkPointsRange(points) {
+      return points >= pointsList[pointsList.length - 1] ? pointsList[pointsList.length - 1] : (points <= 0 ? 0 : points);
+    }
 
-    $scope.pointsDown = function () {
-      setTimeout(getNextPoints($scope.task, false), 1);
-    };
+    function checkPointsValue(task) {
+      if (typeof task.points === 'string') {
+        task.points = checkPointsRange(!!parseInt(task.points) ? parseInt(task.points) : 0);
+      } else {
+        task.points = checkPointsRange(task.points);
+      }
+    }
 
     $scope.keyLogger = function (options) {
+      // enter
       if (options && options.keyCode === 13) {
-        // enter
         $scope.saveTask($scope.task);
       }
 
+      // arrow up
       if (options.keyCode === 38) {
-        // arrow up
         if (options.points) {
-          setTimeout(getNextPoints($scope.task, true), 1);
+          $scope.increment = true;
         } else if ($scope.lastEdited && !options.points) {
           $scope.callLast();
         }
       }
 
+      // arrow down
       if (options.keyCode === 40) {
-        // arrow down
-        setTimeout(getNextPoints($scope.task, false), 1);
+        $scope.increment = false;
       }
 
+      // escape
       if (options.keyCode === 27) {
-        // escape
         $scope.cancel();
       }
 
